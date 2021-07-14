@@ -2,7 +2,7 @@
 FROM pytorch/pytorch:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV BENCHMARK_REPO https://github.com/pytorch/benchmark
+ENV BENCHMARK_REPO https://github.com/greenstar1151/pytorch-benchmark
 
 # RUN apt-get update
 # RUN apt-get install gcc -y
@@ -21,6 +21,6 @@ RUN apt-get update
 RUN apt-get install git jq ffmpeg libsm6 libxext6 g++ -y
 
 RUN git clone -b master --single-branch ${BENCHMARK_REPO} /workspace/benchmark
-RUN cd /workspace/benchmark; python install.py -v 
+RUN cd /workspace/benchmark; python install.py
 # --continue_on_fail
 # RUN pip3 install --upgrade numpy==1.17.3
