@@ -131,3 +131,22 @@ See [Adding Models](torchbenchmark/models/ADDING_MODELS.md).
 
 ## Legacy
 See `legacy` for rnn benchmarks and related scripts that were previously at the top level of this repo.
+
+## Docker
+
+### Prerequisite
+
+- `Docker Compose v1.28.0+`: [Install Docker Compose](https://docs.docker.com/compose/install/)
+- `Docker CUDA Support`: [NVIDIA Container Toolkit Installation Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+
+### Build & Run docker-compose
+
+```
+cd ./pytorch-benchmark
+```
+```
+docker-compose build
+```
+```
+docker-compose up
+```
