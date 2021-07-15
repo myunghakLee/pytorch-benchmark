@@ -22,5 +22,11 @@ RUN apt-get install git jq ffmpeg libsm6 libxext6 g++ -y
 
 RUN git clone -b master --single-branch ${BENCHMARK_REPO} /workspace/benchmark
 RUN cd /workspace/benchmark; python install.py
+RUN mkdir /workspace/benchmark/ncu_reports
+RUN  echo "deb [trusted=yes] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list
+RUN apt-get --allow-unauthenticated update
+RUN apt-get --allow-unauthenticated install nsight-compute-2021.2.0
+ENV PATH="/opt/nvidia/nsight-compute/2021.2.0/:$PATH"
+#RUN dpkg -L nsight-compute-2021.2.0
 # --continue_on_fail
 # RUN pip3 install --upgrade numpy==1.17.3

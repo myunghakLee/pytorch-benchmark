@@ -2,9 +2,10 @@ version: "3.7"
 
 services:
   torchbench_cuda:
+    user: root
     build: ./docker
     image: torchbench:latest
-    command: python run.py resnet50 -d cuda -m eager -t eval --profile
+    command: ncu -o /workspace/benchmark/ncu_reports/resnet50 python run.py resnet50 -d cuda -m eager -t eval --profile
     working_dir: /workspace/benchmark
     deploy:
       resources:
@@ -16,7 +17,11 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
 
+    volumes:
+      - /workspace/benchmark/ncu_reports:/home/ncu_reports
   # torchbench_cpu:
   #   image: torchbench:latest
   #   command: python run.py resnet50 -d cpu -m eager -t eval --profile
   #   working_dir: /workspace/benchmark
+  
+
