@@ -4,7 +4,7 @@ services:
   torchbench_cuda:
     build: ./docker
     image: torchbench:latest
-    command: python run.py resnet50 -d cuda -m eager -t eval --profile
+    command: ./bulk_test.sh
     working_dir: /workspace/benchmark
     deploy:
       resources:
