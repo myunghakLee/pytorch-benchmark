@@ -5,7 +5,9 @@ services:
     user: root
     build: ./docker
     image: torchbench:latest
-    command: ncu -o /workspace/benchmark/ncu_reports/resnet50 python run.py resnet50 -d cuda -m eager -t eval --profile
+    cap_add:
+      - SYS_ADMIN
+    command: nsys profile -t cublas,cuda,cudnn,nvtx,openacc,osrt --cuda-memory-usage true -o /workspace/benchmark/ncu_reports/resnet50-nsystems --force-overwrite true python run.py resnet50 -d cuda -m eager -t eval --profile
     working_dir: /workspace/benchmark
     deploy:
       resources:

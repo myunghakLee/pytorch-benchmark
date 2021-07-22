@@ -25,8 +25,9 @@ RUN cd /workspace/benchmark; python install.py
 RUN mkdir /workspace/benchmark/ncu_reports
 RUN  echo "deb [trusted=yes] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list
 RUN apt-get --allow-unauthenticated update
-RUN apt-get --allow-unauthenticated install nsight-compute-2021.2.0
-ENV PATH="/opt/nvidia/nsight-compute/2021.2.0/:$PATH"
+RUN apt-get --allow-unauthenticated install nsight-systems-2021.2.4
+RUN pip install -e git+https://github.com/fbcotter/py3nvml#egg=py3nvml
+#ENV PATH="/opt/nvidia/nsight-compute/2021.2.0/:$PATH"
 #RUN dpkg -L nsight-compute-2021.2.0
 # --continue_on_fail
 # RUN pip3 install --upgrade numpy==1.17.3
