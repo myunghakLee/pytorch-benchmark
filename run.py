@@ -71,7 +71,7 @@ def profile_one_step(func, nwarmup=3):
 
     use_cuda = args.device == "cuda"
     parent_conn, child_conn = multiprocessing.Pipe()
-    proc = multiprocessing.Process(device_power_profiler, (child_conn, ))
+    proc = multiprocessing.Process(target=device_power_profiler, args=(child_conn, ))
     proc.start()
     print("power profiler kicked off")
     parent_conn.send("start")
