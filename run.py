@@ -30,7 +30,7 @@ def device_power_profiler(connection):
         writer.writerow(header)
         flag = connection.recv()
         t0 = time.time()
-        while not connection.poll(0.2):
+        while not connection.poll(0.001):
             writer.writerow([str(time.time() - t0), py3nvml.nvmlDeviceGetPowerUsage(handle)])
 
 
