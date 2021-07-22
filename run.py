@@ -25,14 +25,13 @@ def device_power_profiler(connection):
     handle = py3nvml.nvmlDeviceGetHandleByIndex(0)
     header = ["elapsed_time", "power"]
     with open("/workspace/benchmark/ncu_reports/power_output.csv", "w") as f:
-        print("power profiler ready")
+        connection.send("ready")
         writer = csv.writer(f)
         writer.writerow(header)
         flag = connection.recv()
         t0 = time.time()
-        while not connection.poll():
+        while not connection.poll(0.2):
             writer.writerow([str(time.time() - t0), py3nvml.nvmlDeviceGetPowerUsage(handle)])
-            time.sleep(200)
 
 
 
@@ -75,6 +74,7 @@ def profile_one_step(func, nwarmup=3):
     proc = multiprocessing.Process(target=device_power_profiler, args=(child_conn, ))
     proc.start()
     print("power profiler kicked off")
+    parent_conn.recv()
     parent_conn.send("start")
     with profiler.profile(record_shapes=True, use_cuda = use_cuda) as prof:
         func()
