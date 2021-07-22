@@ -22,7 +22,7 @@ import torch
 
 def device_power_profiler(connection):
     py3nvml.nvmlInit()
-    handle = nvmlDeviceGetHandleByIndex(0)
+    handle = py3nvml.nvmlDeviceGetHandleByIndex(0)
     header = ["elapsed_time", "power"]
     with open("/workspace/benchmark/ncu_reports/power_output.csv", "w") as f:
         print("power profiler ready")
@@ -31,7 +31,8 @@ def device_power_profiler(connection):
         flag = connection.recv()
         t0 = time.time()
         while not connection.poll():
-            writer.writerow([str(time.time() - t0), nvmlDeviceGetPowerUsage(handle)])
+            writer.writerow([str(time.time() - t0), py3nvml.nvmlDeviceGetPowerUsage(handle)])
+            time.sleep(200)
 
 
 
