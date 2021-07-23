@@ -24,3 +24,13 @@ RUN git clone -b master --single-branch ${BENCHMARK_REPO} /workspace/benchmark
 RUN cd /workspace/benchmark; python install.py
 # --continue_on_fail
 # RUN pip3 install --upgrade numpy==1.17.3
+RUN conda install notebook -y
+
+WORKDIR /workspace/benchmark
+# Add Tini. Tini operates as a process subreaper for jupyter. This prevents kernel crashes.
+ENV TINI_VERSION v0.6.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+ENTRYPOINT ["/usr/bin/tini", "--"]
+
+CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
