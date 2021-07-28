@@ -20,11 +20,11 @@ from torchbenchmark import list_models
 import torch
 
 
-def device_power_profiler(connection):
+def device_power_profiler(connection, filename):
     py3nvml.nvmlInit()
     handle = py3nvml.nvmlDeviceGetHandleByIndex(0)
     header = ["elapsed_time", "power"]
-    with open("/workspace/benchmark/ncu_reports/power_output.csv", "w") as f:
+    with open(filename, "w") as f:
         connection.send("ready")
         writer = csv.writer(f)
         writer.writerow(header)
@@ -65,13 +65,13 @@ def run_one_step(func):
         print(f"Ran in {t1 - t0} seconds.")
 
 
-def profile_one_step(func, nwarmup=3):
+def profile_one_step(func, model_name, deviec_name, mode, nwarmup=3):
     for i in range(nwarmup):
         func()
 
     use_cuda = args.device == "cuda"
     parent_conn, child_conn = multiprocessing.Pipe()
-    proc = multiprocessing.Process(target=device_power_profiler, args=(child_conn, ))
+    proc = multiprocessing.Process(target=device_power_profiler, args=(child_conn, "{model_name}_{device_name}_{mode}_power_log.csv"))
     proc.start()
     print("power profiler kicked off")
     parent_conn.recv()
@@ -106,6 +106,6 @@ if __name__ == "__main__":
     test = getattr(m, args.test)
 
     if args.profile:
-        profile_one_step(test)
+        profile_one_step(test, Model.name, args.device, args.mode)
     else:
         run_one_step(test)

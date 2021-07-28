@@ -7,7 +7,8 @@ services:
     image: torchbench:latest
     cap_add:
       - SYS_ADMIN
-    command: nsys profile -t cublas,cuda,cudnn,nvtx,openacc,osrt --cuda-memory-usage true -o /workspace/benchmark/ncu_reports/resnet50-nsystems --force-overwrite true python run.py resnet50 -d cuda -m eager -t eval --profile
+    #command: nsys profile -t cublas,cuda,cudnn,nvtx,openacc,osrt --cuda-memory-usage true -o /workspace/benchmark/ncu_reports/resnet50-nsystems --force-overwrite true python run.py resnet50 -d cuda -m eager -t train --profile
+    command: ./bulk_test.sh
     working_dir: /workspace/benchmark
     deploy:
       resources:
