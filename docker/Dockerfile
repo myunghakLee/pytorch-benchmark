@@ -21,8 +21,7 @@ RUN apt-get update
 RUN apt-get install git jq ffmpeg libsm6 libxext6 g++ -y
 
 RUN git clone -b power_nsightsystems --single-branch ${BENCHMARK_REPO} /workspace/benchmark
-RUN cd /workspace/benchmark; 
-RUN chmod +x ./bulk_test.sh
+RUN cd /workspace/benchmark;
 RUN python install.py
 RUN mkdir /workspace/benchmark/ncu_reports
 RUN  echo "deb [trusted=yes] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list
