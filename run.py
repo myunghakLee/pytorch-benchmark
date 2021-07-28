@@ -65,13 +65,13 @@ def run_one_step(func):
         print(f"Ran in {t1 - t0} seconds.")
 
 
-def profile_one_step(func, model_name, deviec_name, mode, nwarmup=3):
+def profile_one_step(func, model_name, device_name, mode, nwarmup=3):
     for i in range(nwarmup):
         func()
 
     use_cuda = args.device == "cuda"
     parent_conn, child_conn = multiprocessing.Pipe()
-    proc = multiprocessing.Process(target=device_power_profiler, args=(child_conn, f"{model_name}_{device_name}_{mode}_power_log.csv"))
+    proc = multiprocessing.Process(target=device_power_profiler, args=(child_conn, "{model_name}_{device_name}_{mode}_power_log.csv"))
     proc.start()
     print("power profiler kicked off")
     parent_conn.recv()
