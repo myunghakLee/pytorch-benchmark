@@ -1,8 +1,8 @@
 version: "3.7"
 
 services:
-  torchbench_cuda:
-    build: ./docker
+  torchbench_testing:
+    build: ./docker/base_env
     image: torchbench:latest
     command: ./bulk_test.sh
     working_dir: /workspace/benchmark
@@ -16,7 +16,22 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
 
-  # torchbench_cpu:
-  #   image: torchbench:latest
-  #   command: python run.py resnet50 -d cpu -m eager -t eval --profile
-  #   working_dir: /workspace/benchmark
+  torchbench_nb:
+    build: ./docker/notebook
+    image: torchbench_notebook:latest
+    cap_add:
+      - SYS_ADMIN
+    working_dir: /workspace/benchmark
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities:
+              - gpu
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+    volumes:
+      - .:/workspace/benchmark
+    ports:
+      - "8888:8888"
