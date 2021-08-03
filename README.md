@@ -144,9 +144,13 @@ See `legacy` for rnn benchmarks and related scripts that were previously at the 
 ```
 cd ./pytorch-benchmark
 ```
+
+#### Notebook Environment
 ```
-docker-compose build
+docker-compose build torchbench_nb
 ```
 ```
-docker-compose up
+docker-compose run --service-ports torchbench_nb
 ```
+
+then a message like `http://127.0.0.1:8888/?token=[token]` will appear on the console. Connect to the kernel(rather by typing the address on the browser or by VSC extension) and open `plots_test.ipynb` file. You could run the experiment by running all cells.
