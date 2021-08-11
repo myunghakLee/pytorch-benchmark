@@ -154,3 +154,5 @@ docker-compose run --service-ports torchbench_nb
 ```
 
 then a message like `http://127.0.0.1:8888/?token=[token]` will appear on the console. Connect to the kernel(rather by typing the address on the browser or by VSC extension) and open `plots_test.ipynb` file. You could run the experiment by running all cells.
+ 
+ There are some settings you can edit in the first cell of the notebook, primarily the number of iterations and what models to run. Change them accordingly.
