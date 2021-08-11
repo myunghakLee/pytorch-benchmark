@@ -2,11 +2,15 @@
 FROM pytorch/pytorch:latest
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV BENCHMARK_REPO https://github.com/greenstar1151/pytorch-benchmark
 
-# Need to add as per https://stackoverflow.com/questions/55313610
-RUN apt-get update
+RUN  echo "deb [trusted=yes] https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list
+RUN apt-get --allow-unauthenticated update
 RUN apt-get install git jq ffmpeg libsm6 libxext6 g++ -y
+RUN apt-get --allow-unauthenticated install nsight-systems-2021.2.4
+RUN pip3 install -e git+https://github.com/fbcotter/py3nvml#egg=py3nvml
 
-RUN git clone -b master --single-branch ${BENCHMARK_REPO} /workspace/benchmark
-RUN cd /workspace/benchmark; python install.py
+COPY . /workspace/benchmark
+WORKDIR /workspace/benchmark
+RUN mkdir /ncu_reports
+RUN python3 ./install.py
+RUN rm -rf /var/lib/apt/lists/*

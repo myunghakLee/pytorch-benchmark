@@ -2,7 +2,9 @@ version: "3.7"
 
 services:
   torchbench_testing:
-    build: ./docker/base_env
+    build: 
+      context: ./
+      dockerfile: ./docker/base_env/Dockerfile
     image: torchbench:latest
     command: ./bulk_test.sh
     working_dir: /workspace/benchmark
@@ -17,7 +19,9 @@ services:
       - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
 
   torchbench_nb:
-    build: ./docker/notebook
+    build: 
+      context: ./
+      dockerfile: ./docker/notebook/Dockerfile
     image: torchbench_notebook:latest
     cap_add:
       - SYS_ADMIN
