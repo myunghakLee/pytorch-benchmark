@@ -17,8 +17,10 @@ RUN mkdir /trace_data/exec_time
 RUN mkdir /trace_data/ncu_reports
 
 RUN pip3 install -e git+https://github.com/fbcotter/py3nvml#egg=py3nvml
+RUN conda install matplotlib
 
-RUN python3 ./install.py
+
+RUN python3 ./install.py --verbose
 RUN rm -rf /var/lib/apt/lists/*
 RUN conda install notebook -y
 
