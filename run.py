@@ -15,6 +15,7 @@ import torch.profiler as profiler
 from torchbenchmark import list_models
 import torch
 
+WARMUP_ROUNDS = 3
 
 def run_one_step_with_cudastreams(func, streamcount):
 
@@ -50,9 +51,10 @@ def run_one_step_with_cudastreams(func, streamcount):
         print('{:<20} {:>20}'.format("GPU Time:", "%.3f milliseconds" % start_event.elapsed_time(end_event)), sep='')
 
 
-def run_one_step(func):
-    # Warm-up with one run.
-    func()
+def run_one_step(func, nwarmup=WARMUP_ROUNDS):
+    # Warm-up `nwarmup` rounds
+    for _i in range(nwarmup):
+        func()
 
     if args.device == "cuda":
         torch.cuda.synchronize()
@@ -83,7 +85,7 @@ def run_one_step(func):
         print('{:<20} {:>20}'.format("CPU Total Wall Time:", "%.3f milliseconds" % ((t1 - t0) / 1_000_000)), sep='')
 
 
-def profile_one_step(func, nwarmup=3):
+def profile_one_step(func, nwarmup=WARMUP_ROUNDS):
     activity_groups = []
     if ((not args.profile_devices and args.device == 'cuda') or
             (args.profile_devices and 'cuda' in args.profile_devices)):
@@ -136,6 +138,7 @@ if __name__ == "__main__":
                         help="Profiling comma separated list of activities such as cpu,cuda.")
     parser.add_argument("--cudastreams", action="store_true",
                         help="Utilization test using increasing number of cuda streams.")
+    parser.add_argument("--bs", type=int, help="Specify batch size to the test.")
     args = parser.parse_args()
 
     if args.cudastreams and not args.device == "cuda":
@@ -154,7 +157,18 @@ if __name__ == "__main__":
         exit(-1)
 
     # build the model and get the chosen test method
-    m = Model(device=args.device, jit=(args.mode == "jit"))
+    if args.bs:
+        try:
+            if args.test == "eval":
+                m = Model(device=args.device, jit=(args.mode == "jit"), eval_bs=args.bs)
+            elif args.test == "train":
+                m = Model(device=args.device, jit=(args.mode == "jit"), train_bs=args.bs)
+        except:
+            print(f"The model {args.model} doesn't support specifying batch size, please remove --bs argument in the commandline.")
+            exit(1)
+    else:
+        m = Model(device=args.device, jit=(args.mode == "jit"))
+
     test = getattr(m, args.test)
 
     if args.profile:
