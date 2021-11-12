@@ -14,7 +14,7 @@ from datasets import load_dataset
 class Model(BenchmarkModel):
     task = NLP.LANGUAGE_MODELING
 
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, eval_bs=1):
         super().__init__()
         self.device = device
         self.jit = jit
@@ -27,7 +27,7 @@ class Model(BenchmarkModel):
         input_ids = torch.randint(0, config.vocab_size, (8, 512)).to(device)
         decoder_ids = torch.randint(0, config.vocab_size, (8, 512)).to(device)
 
-        eval_context = torch.randint(0, config.vocab_size, (1, 512)).to(device)
+        eval_context = torch.randint(0, config.vocab_size, (eval_bs, 512)).to(device)
 
         self.train_inputs = {'input_ids': input_ids, 'labels': decoder_ids}
         self.eval_inputs = {'input_ids': eval_context, }

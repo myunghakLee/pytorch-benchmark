@@ -74,7 +74,7 @@ class Model(BenchmarkModel):
         random.seed(seed)
         np.random.seed(seed)
 
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, eval_bs=16):
         super().__init__()
 
         debug_print = False
@@ -106,7 +106,7 @@ class Model(BenchmarkModel):
 
         # parameters for work size, these were chosen to provide a profile
         # that matches processing of an original trained en-de corpus.
-        args.batch_size = 16
+        args.batch_size = eval_bs
         vocab_size = 20000
         args.corpus_lines = 50000
 

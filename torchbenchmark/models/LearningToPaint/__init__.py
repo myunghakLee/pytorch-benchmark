@@ -23,7 +23,7 @@ class Model(BenchmarkModel):
     task = REINFORCEMENT_LEARNING.OTHER_RL
     optimized_for_inference = True
 
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, eval_bs=64):
         super(Model, self).__init__()
         self.device = device
         self.jit = jit
@@ -31,7 +31,7 @@ class Model(BenchmarkModel):
         net = FCN()
         self.step = 0
         self.opt = Namespace(**{
-            'batch_size': 64,
+            'batch_size': eval_bs,
             'debug': '',
             'script': False,
             })

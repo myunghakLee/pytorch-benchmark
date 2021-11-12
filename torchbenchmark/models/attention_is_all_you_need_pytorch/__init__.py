@@ -53,13 +53,13 @@ class Model(BenchmarkModel):
         
         return transformer
 
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, eval_bs=128):
         super().__init__()
         self.device = device
         self.jit = jit
         root = str(Path(__file__).parent)
         self.opt = Namespace(**{
-            'batch_size': 128,
+            'batch_size': eval_bs,
             'd_inner_hid': 2048,
             'd_k': 64,
             'd_model': 512,

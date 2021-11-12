@@ -38,7 +38,7 @@ torch.backends.cudnn.benchmark = False
 
 class Model(BenchmarkModel):
     task = NLP.OTHER_NLP
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, eval_bs=1):
         super().__init__()
         self.device = device
         self.jit = jit
@@ -76,7 +76,7 @@ class Model(BenchmarkModel):
                                                sampler=None,
                                                num_workers=self.num_workers, drop_last=False)
         self.eval_data_iterator = DataSetIter(dataset=self.eval_data,
-                                              batch_size=CMRC2018_DEV_SPEC["data_size"],
+                                              batch_size=eval_bs, #CMRC2018_DEV_SPEC["data_size"],
                                               sampler=None,
                                               num_workers=self.num_workers, drop_last=False)
 

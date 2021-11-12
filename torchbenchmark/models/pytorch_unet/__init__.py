@@ -24,7 +24,7 @@ class Model(BenchmarkModel):
 
     task = COMPUTER_VISION.SEGMENTATION
 
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, eval_bs=1):
         super().__init__()
         self.device = device
         self.jit = jit
@@ -34,7 +34,7 @@ class Model(BenchmarkModel):
         # Source image link: https://www.kaggle.com/c/carvana-image-masking-challenge/code
         # Source images are 1280 x 1918, but the original code scales it in half to 640 x 959
         # The batch size is 1 and there are 3 channels for the image inputs and 1 for the mask
-        self.sample_inputs = torch.rand((1, 3, 640, 959), dtype=torch.float32).to(self.device)
+        self.sample_inputs = torch.rand((eval_bs, 3, 640, 959), dtype=torch.float32).to(self.device)
         self.sample_masks = torch.randint(0, 1, (1, 640, 959), dtype=torch.int64).to(self.device)
         self.model = UNet(n_channels=3, n_classes=2, bilinear=True).to(self.device)
         if self.jit:

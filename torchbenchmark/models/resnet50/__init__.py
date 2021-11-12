@@ -15,13 +15,13 @@ from torchbenchmark.tasks import COMPUTER_VISION
 class Model(BenchmarkModel):
     task = COMPUTER_VISION.CLASSIFICATION
     optimized_for_inference = True
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, eval_bs=32):
         super().__init__()
         self.device = device
         self.jit = jit
         self.model = models.resnet50().to(self.device)
         self.eval_model = models.resnet50().to(self.device)
-        self.example_inputs = (torch.randn((32, 3, 224, 224)).to(self.device),)
+        self.example_inputs = (torch.randn((eval_bs, 3, 224, 224)).to(self.device),)
 
         if self.jit:
             if hasattr(torch.jit, '_script_pdt'):
