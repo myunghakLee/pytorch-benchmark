@@ -21,7 +21,7 @@ class Model(BenchmarkModel):
 
   task = RECOMMENDATION.RECOMMENDATION
 
-  def __init__(self, device="cpu", jit=False):
+  def __init__(self, device="cpu", jit=False, eval_bs=256):
     super().__init__()
     self.device = device
     self.not_implemented_reason = "Implemented"
@@ -38,7 +38,7 @@ class Model(BenchmarkModel):
 
     else:
       self.train_obj = DeepRecommenderTrainBenchmark(device = self.device, jit = jit)
-      self.infer_obj = DeepRecommenderInferenceBenchmark(device = self.device, jit = jit)
+      self.infer_obj = DeepRecommenderInferenceBenchmark(device = self.device, jit = jit, eval_bs=eval_bs)
 
   def get_module(self):
     if self.eval_mode:

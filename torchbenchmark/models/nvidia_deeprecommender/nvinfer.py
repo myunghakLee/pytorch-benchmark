@@ -115,11 +115,11 @@ def processArgState(args) :
 
 class DeepRecommenderInferenceBenchmark:
 
-  def __init__(self, device = 'cpu', jit=False, usecommandlineargs = False) :
+  def __init__(self, device = 'cpu', jit=False, usecommandlineargs = False, eval_bs=256) :
 
     self.toytest = True
 
-    self.batch_size = 256
+    self.batch_size = eval_bs
 
     # number of movies in netflix training set.
     self.node_count = 197951
