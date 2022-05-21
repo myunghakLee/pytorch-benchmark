@@ -11,7 +11,7 @@ from torchbenchmark.tasks import COMPUTER_VISION
 #       DO NOT MODIFY THESE FILES DIRECTLY!!!
 #       USE `gen_torchvision_benchmarks.py`
 #
-#######################################################
+# ######################################################
 class Model(BenchmarkModel):
     task = COMPUTER_VISION.CLASSIFICATION
     optimized_for_inference = True
@@ -46,7 +46,7 @@ class Model(BenchmarkModel):
     def set_eval(self):
         pass
 
-    def train(self, inputs= [], niter=3):
+    def train(self, niter=3, inputs= []):
         optimizer = optim.Adam(self.model.parameters())
         loss = torch.nn.CrossEntropyLoss()
         for _ in range(niter):
@@ -60,9 +60,14 @@ class Model(BenchmarkModel):
             loss(pred, y).backward()
             optimizer.step()
 
-    def eval(self, niter=1):
+    def eval(self, niter=1, inputs= []):
         model = self.eval_model
-        example_inputs = self.infer_example_inputs
+        
+        if len(inputs) == 0:
+            example_inputs = self.infer_example_inputs
+        else:
+            example_inputs = (inputs.to(self.device),)
+        
         for i in range(niter):
             model(*example_inputs)
 
