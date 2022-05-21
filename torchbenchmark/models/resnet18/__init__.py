@@ -46,12 +46,16 @@ class Model(BenchmarkModel):
     def set_eval(self):
         pass
 
-    def train(self, niter=3):
+    def train(self, inputs= [], niter=3):
         optimizer = optim.Adam(self.model.parameters())
         loss = torch.nn.CrossEntropyLoss()
         for _ in range(niter):
             optimizer.zero_grad()
-            pred = self.model(*self.example_inputs)
+            if len(inputs) == 0:
+                pred = self.model(*self.example_inputs)
+            else:
+                pred = (inputs.to(self.device),)
+                
             y = torch.empty(pred.shape[0], dtype=torch.long, device=self.device).random_(pred.shape[1])
             loss(pred, y).backward()
             optimizer.step()
