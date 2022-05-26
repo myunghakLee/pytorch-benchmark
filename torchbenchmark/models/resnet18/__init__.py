@@ -55,7 +55,7 @@ class Model(BenchmarkModel):
                 pred = self.model(*self.example_inputs)
             else:
                 pred = (inputs.to(self.device),)
-                
+
             y = torch.empty(pred.shape[0], dtype=torch.long, device=self.device).random_(pred.shape[1])
             loss(pred, y).backward()
             optimizer.step()

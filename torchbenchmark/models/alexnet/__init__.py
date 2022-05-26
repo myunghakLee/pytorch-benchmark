@@ -56,9 +56,9 @@ class Model(BenchmarkModel):
             loss(pred, y).backward()
             optimizer.step()
 
-    def eval(self, niter=1):
+    def eval(self, niter=1, inputs=[]):
         model = self.eval_model
-        example_inputs = self.infer_example_inputs
+        example_inputs = (inputs.to(self.device),)
         for i in range(niter):
             model(*example_inputs)
 
