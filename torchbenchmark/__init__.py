@@ -9,7 +9,7 @@ import subprocess
 import sys
 import tempfile
 import threading
-from pathlib import PATH
+from pathlib import Path
 from typing import Any, Callable, Dict, List, NoReturn, Optional, Tuple
 from urllib import request
 
