@@ -12,8 +12,14 @@ import threading
 from typing import Any, Callable, Dict, List, NoReturn, Optional, Tuple
 from urllib import request
 
+# +
 from components._impl.tasks import base as base_task
 from components._impl.workers import subprocess_worker
+
+REPO_PATH = Path(os.path.abspath(__file__)).parent.parent
+DATA_PATH = os.path.join(REPO_PATH, "torchbenchmark", "data", ".data")
+
+# -
 
 
 proxy_suggestion = "Unable to verify https connectivity, " \

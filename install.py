@@ -1,8 +1,4 @@
-import argparse
-import subprocess
-import sys
-from torchbenchmark import setup, _test_https, proxy_suggestion
-
+# +
 
 def pip_install_requirements():
     if not _test_https():
@@ -16,6 +12,9 @@ def pip_install_requirements():
     except Exception as e:
         return (False, e)
     return True, None
+
+
+# -
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
