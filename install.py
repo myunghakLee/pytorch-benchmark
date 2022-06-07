@@ -1,4 +1,9 @@
 # +
+import argparse
+import subprocess
+import sys
+from torchbenchmark import setup, _test_https, proxy_sugestion
+
 
 def pip_install_requirements():
     if not _test_https():
