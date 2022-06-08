@@ -454,7 +454,7 @@ def list_models(model_match=None):
     for model_path in _list_model_paths():
         model_name = os.path.basename(model_path)
         print("model_name(list_models) : ", model_name)
-        print("package(list_models) : ", package)
+        print("__name__ : ", __name__)
 
         try:
             module = importlib.import_module(f'.models.{model_name}', package=__name__)
