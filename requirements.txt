@@ -1,3 +1,4 @@
+accelerate
 bs4
 patch
 py-cpuinfo
@@ -11,3 +12,16 @@ timm == 0.4.5
 MonkeyType
 psutil
 pyyaml
+
+git+https://github.com/rwightman/pytorch-image-models.git@6d4665b
+# huggingface fx2trt support requires transformers == 4.12.1
+transformers == 4.12.1
+MonkeyType
+psutil
+pyyaml
+# pytorch build script pins numpy version
+# https://github.com/pytorch/builder/blob/ae5c82e65cb3d8bac6df50e742a195019af91ad3/wheel/build_wheel.sh#L145
+numpy==1.21.2
+scipy # for lazy_bench.py
+submitit
+
