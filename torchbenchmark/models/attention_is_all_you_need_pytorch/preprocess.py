@@ -1,3 +1,4 @@
+# +
 ''' Handling the data io '''
 import os
 import argparse
@@ -12,12 +13,17 @@ import torch
 import tarfile
 import torchtext.data
 import torchtext.datasets
+
+
 try:
     from torchtext.legacy.data import Field
     from torchtext.legacy.datasets.translation import TranslationDataset, Multi30k
+#     from torchbenchmark.util.torchtext_legacy.field import Field
+#     from torchbenchmark.util.torchtext_legacy.translation import TranslationDataset, Multi30k
 except ImportError:
     from torchtext.data import Field
     from torchtext.datasets import TranslationDataset, Multi30k
+# -
 
 import transformer.Constants as Constants
 from learn_bpe import learn_bpe

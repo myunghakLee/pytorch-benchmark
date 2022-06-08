@@ -223,6 +223,8 @@ class ModelTask(base_task.TaskBase):
 
         model_name = os.path.basename(model_path)
         diagnostic_msg = ""
+        print("model_name : ", model_name)
+        print("package : ", package)
         try:
             module = importlib.import_module(f'.models.{model_name}', package=package)
             Model = getattr(module, 'Model', None)
@@ -451,6 +453,9 @@ def list_models(model_match=None):
     models = []
     for model_path in _list_model_paths():
         model_name = os.path.basename(model_path)
+        print("model_name(list_models) : ", model_name)
+        print("package(list_models) : ", package)
+
         try:
             module = importlib.import_module(f'.models.{model_name}', package=__name__)
         except ModuleNotFoundError as e:
