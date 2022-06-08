@@ -41,22 +41,20 @@ def decompress_input():
         print("OK")
 
 
-def pip_install_requirements():
-    if not _test_https():
-        print(proxy_suggestion)
-        sys.exit(-1)
-    try:
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '-r', 'requirements.txt'],
-                        check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError as e:
-        return (False, e.output)
-    except Exception as e:
-        return (False, e)
-    return True, None
+# def pip_install_requirements():
+#     if not _test_https():
+#         print(proxy_suggestion)
+#         sys.exit(-1)
+#     try:
+#         subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', '-r', 'requirements.txt'],
+#                         check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#     except subprocess.CalledProcessError as e:
+#         return (False, e.output)
+#     except Exception as e:
+#         return (False, e)
+#     return True, None
 
-
-# -
-
+# +
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("models", nargs='*', default=[],
@@ -87,24 +85,24 @@ if __name__ == '__main__':
         sys.exit(-1)
     decompress_input()
 
-    success, errmsg = pip_install_requirements()
-    if not success:
-        print("Failed to install torchbenchmark requirements:")
-        print(errmsg)
-        if not args.continue_on_fail:
-            sys.exit(-1)
-    new_versions = get_pkg_versions(TORCH_DEPS)
-    if versions != new_versions:
-        print(f"The torch packages are re-installed after installing the benchmark deps. \
-                Before: {versions}, after: {new_versions}")
-        sys.exit(-1)
+#     success, errmsg = pip_install_requirements()
+#     if not success:
+#         print("Failed to install torchbenchmark requirements:")
+#         print(errmsg)
+#         if not args.continue_on_fail:
+#             sys.exit(-1)
+#     new_versions = get_pkg_versions(TORCH_DEPS)
+#     if versions != new_versions:
+#         print(f"The torch packages are re-installed after installing the benchmark deps. \
+#                 Before: {versions}, after: {new_versions}")
+#         sys.exit(-1)
 
-    success, errmsg = pip_install_requirements()
-    if not success:
-        print("Failed to install torchbenchmark requirements:")
-        print(errmsg)
-        if not args.continue_on_fail:
-            sys.exit(-1)
+#     success, errmsg = pip_install_requirements()
+#     if not success:
+#         print("Failed to install torchbenchmark requirements:")
+#         print(errmsg)
+#         if not args.continue_on_fail:
+#             sys.exit(-1)
     success &= setup(verbose=args.verbose, continue_on_fail=args.continue_on_fail)
     if not success:
         if args.continue_on_fail:
