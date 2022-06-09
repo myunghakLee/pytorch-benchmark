@@ -50,8 +50,6 @@ class Model(BenchmarkModel):
             n_layers=self.opt.n_layers,
             n_head=self.opt.n_head,
             dropout=self.opt.dropout).to(self.device)
-        print(self.opt)
-        exit(True)
         return transformer
 
     def __init__(self, device=None, jit=False, use_client_data = True):
