@@ -455,11 +455,11 @@ def list_models(model_match=None):
         print("=" * 100)
         model_name = os.path.basename(model_path)
         print("model_name : ", model_name)
-        try:
-            module = importlib.import_module(f'.models.{model_name}', package=__name__)
-        except ModuleNotFoundError as e:
-            print(f"Warning: Could not find dependent module {e.name} for Model {model_name}, skip it")
-            continue
+#         try:
+        module = importlib.import_module(f'.models.{model_name}', package=__name__)
+#         except ModuleNotFoundError as e:
+#             print(f"Warning: Could not find dependent module {e.name} for Model {model_name}, skip it")
+#             continue
         Model = getattr(module, 'Model', None)
         print("Model : ", Model)
         if Model is None:

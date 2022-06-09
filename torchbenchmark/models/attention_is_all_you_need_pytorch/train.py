@@ -160,8 +160,8 @@ def eval_epoch(model, validation_data, device, opt):
             # trg_seq :  torch.Size([256, 34]) torch.int64
             # src_seq :  torch.Size([256, 45]) torch.int64
             # trg_seq :  torch.Size([256, 40]) torch.int64            
-            print("src_seq : ", src_seq.shape, src_seq.dtype)
-            print("trg_seq : ", trg_seq.shape, src_seq.dtype)
+#             print("src_seq : ", src_seq.shape, src_seq.dtype)
+#             print("trg_seq : ", trg_seq.shape, src_seq.dtype)
             
             pred = model(src_seq, trg_seq)
             loss, n_correct, n_word = cal_performance(

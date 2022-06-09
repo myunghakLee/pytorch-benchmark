@@ -91,13 +91,16 @@ class Model(BenchmarkModel):
         self.eval_model.eval()
         
         if use_client_data:
-            self.example_inputs = None
+            
+            src_seq =  torch.randint(1, 10, (256, 31))
+            trg_seq =  torch.randint(1, 10, (256, 31))
+            
         else:
             batch = list(validation_data)[0]
             src_seq = patch_src(batch.src, self.opt.src_pad_idx).to(self.device)
             trg_seq, self.gold = map(lambda x: x.to(self.device), patch_trg(batch.trg, self.opt.trg_pad_idx))
             # We use validation_data for training as well so that it can finish fast enough.
-            self.example_inputs = (src_seq, trg_seq)
+        self.example_inputs = (src_seq, trg_seq)
         
         if self.jit:
             if hasattr(torch.jit, '_script_pdt'):
