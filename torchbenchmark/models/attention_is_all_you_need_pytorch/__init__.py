@@ -50,19 +50,21 @@ class Model(BenchmarkModel):
             n_layers=self.opt.n_layers,
             n_head=self.opt.n_head,
             dropout=self.opt.dropout).to(self.device)
-        
+        print(self.opt)
+        exit(True)
         return transformer
 
     def __init__(self, device=None, jit=False, use_client_data = True):
+        print("INIT" * 100)
         super().__init__()
         self.device = device
         self.jit = jit
         root = str(Path(__file__).parent)
         self.opt = Namespace(**{
-            'src_vocab_size' : 31,
-            'trg_vocab_size' : 31,
-            'trg_pad_idx' : 0,
-            'src_pad_idx' : 0,
+            'src_vocab_size' : 9521,
+            'trg_vocab_size' : 9521,
+            'trg_pad_idx' : 1,
+            'src_pad_idx' : 1,
             'batch_size': 128,
             'd_inner_hid': 2048,
             'd_k': 64,
