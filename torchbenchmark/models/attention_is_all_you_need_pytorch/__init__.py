@@ -84,7 +84,6 @@ class Model(BenchmarkModel):
             'val_path': None,
         })
 
-        _, validation_data = prepare_dataloaders(self.opt, self.device)
 
         transformer = self._create_transformer()
         self.eval_model = self._create_transformer()
@@ -96,6 +95,7 @@ class Model(BenchmarkModel):
             trg_seq =  torch.randint(1, 10, (256, 31))
             
         else:
+            _, validation_data = prepare_dataloaders(self.opt, self.device)
             batch = list(validation_data)[0]
             src_seq = patch_src(batch.src, self.opt.src_pad_idx).to(self.device)
             trg_seq, self.gold = map(lambda x: x.to(self.device), patch_trg(batch.trg, self.opt.trg_pad_idx))
@@ -137,7 +137,6 @@ class Model(BenchmarkModel):
                 pred, self.gold, self.opt.trg_pad_idx, smoothing=self.opt.label_smoothing)
             loss.backward()
             optimizer.step_and_update_lr()
-
 
 if __name__ == '__main__':
     m = Model(device='cuda', jit=False)
