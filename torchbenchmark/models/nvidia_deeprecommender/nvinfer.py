@@ -118,7 +118,7 @@ class DeepRecommenderInferenceBenchmark:
   def __init__(self, device = 'cpu', jit=False, usecommandlineargs = False) :
 
     self.toytest = False
-    self.client_data = False
+    self.client_data = True
 
     self.batch_size = 256
 
