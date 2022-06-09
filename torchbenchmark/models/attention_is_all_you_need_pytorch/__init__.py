@@ -55,7 +55,6 @@ class Model(BenchmarkModel):
         return transformer
 
     def __init__(self, device=None, jit=False, use_client_data = True):
-        print("INIT" * 100)
         super().__init__()
         self.device = device
         self.jit = jit
