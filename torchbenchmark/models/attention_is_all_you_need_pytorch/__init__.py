@@ -112,12 +112,12 @@ class Model(BenchmarkModel):
     def get_module(self):
         return self.module, self.example_inputs
 
-    def eval(self, niter=1, data = []):
+    def eval(self, niter=1, inputs=[]):
         self.module.eval()
         
-        if len(data) > 0:
+        if len(inputs) > 0:
             for _ in range(niter):
-                self.eval_model(data)
+                self.eval_model(inputs)
         else:
             for _ in range(niter):
                 self.eval_model(*self.example_inputs)

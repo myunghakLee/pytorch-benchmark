@@ -86,8 +86,8 @@ class Model(BenchmarkModel):
             loss.backward()
             self.optimizer.step()
 
-    def eval(self, niter=1, data = []):
-        if len(data) > 0:
+    def eval(self, niter=1, inputs=[]):
+        if len(inputs) > 0:
             for _ in range(niter):
                 self.eval_model(self.example_inputs)
                 

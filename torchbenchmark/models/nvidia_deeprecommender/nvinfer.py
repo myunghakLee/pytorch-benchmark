@@ -209,11 +209,11 @@ class DeepRecommenderInferenceBenchmark:
   
       self.eval_data_layer.src_data = self.data_layer.data
 
-  def eval(self, niter=1, data = []):
+  def eval(self, niter=1, inputs = []):
     for iteration in range(niter):
 
-      if len(data) > 0:
-        self.rencoder(data)
+      if len(inputs) > 0:
+        self.rencoder(inputs)
         continue
       elif self.toytest:
         self.rencoder(self.toyinputs)

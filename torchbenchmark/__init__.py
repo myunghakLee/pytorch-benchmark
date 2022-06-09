@@ -450,6 +450,7 @@ def list_models_details(workers: int = 1) -> List[ModelDetails]:
 
 def list_models(model_match=None):
     models = []
+    print(_list_model_paths())
     for model_path in _list_model_paths():
         model_name = os.path.basename(model_path)
 

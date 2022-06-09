@@ -58,11 +58,11 @@ class Model(BenchmarkModel):
     for i in range(niter):
       self.train_obj.train(niter)
 
-  def eval(self, niter=1, data = []):
+  def eval(self, niter=1, inputs=[]):
     self.check_implemented()
 
     for i in range(niter):
-      self.infer_obj.eval(niter, data)
+      self.infer_obj.eval(niter, inputs)
 
   def check_implemented(self):
     if self.not_implemented_reason != "Implemented":
