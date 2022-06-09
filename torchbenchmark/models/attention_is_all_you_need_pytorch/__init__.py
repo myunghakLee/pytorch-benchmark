@@ -60,7 +60,7 @@ class Model(BenchmarkModel):
         root = str(Path(__file__).parent)
         self.opt = Namespace(**{
             'src_vocab_size' : 31,
-            'trg_vocab_size' : 31
+            'trg_vocab_size' : 31,
             'batch_size': 128,
             'd_inner_hid': 2048,
             'd_k': 64,
