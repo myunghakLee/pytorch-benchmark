@@ -124,7 +124,7 @@ class Model(BenchmarkModel):
         
         if len(inputs) > 0:
             for _ in range(niter):
-                self.eval_model(inputs)
+                self.eval_model(*inputs)
         else:
             for _ in range(niter):
                 self.eval_model(*self.example_inputs)
