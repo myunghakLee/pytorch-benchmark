@@ -19,9 +19,9 @@ except ImportError:
     from torchtext.data import Field, Dataset, BucketIterator
     from torchtext.datasets import TranslationDataset
 
-from .transformer import Constants
-from .transformer.Models import Transformer
-from .transformer.Optim import ScheduledOptim
+from transformer import Constants
+from transformer.Models import Transformer
+from transformer.Optim import ScheduledOptim
 import random
 import numpy as np
 
@@ -93,6 +93,9 @@ def train_epoch(model, training_data, optimizer, opt, device, smoothing):
         src_seq = patch_src(batch.src, opt.src_pad_idx).to(device)
         trg_seq, gold = map(lambda x: x.to(device), patch_trg(batch.trg, opt.trg_pad_idx))
 
+        print("src_seq : ", src_seq.shape, src_seq.dtype)
+        print("trg_seq : ", trg_seq.shape, src_seq.dtype)
+        
         # forward
         optimizer.zero_grad()
         last_run = (src_seq, trg_seq)
@@ -129,6 +132,37 @@ def eval_epoch(model, validation_data, device, opt):
             trg_seq, gold = map(lambda x: x.to(device), patch_trg(batch.trg, opt.trg_pad_idx))
 
             # forward
+            # src_seq :  torch.Size([256, 33]) torch.int64
+            # trg_seq :  torch.Size([256, 31]) torch.int64
+            # src_seq :  torch.Size([256, 27]) torch.int64
+            # trg_seq :  torch.Size([256, 30]) torch.int64
+            # src_seq :  torch.Size([256, 31]) torch.int64
+            # trg_seq :  torch.Size([256, 29]) torch.int64
+            # src_seq :  torch.Size([256, 28]) torch.int64
+            # trg_seq :  torch.Size([256, 31]) torch.int64
+            # src_seq :  torch.Size([256, 30]) torch.int64
+            # trg_seq :  torch.Size([256, 27]) torch.int64
+            # src_seq :  torch.Size([256, 27]) torch.int64
+            # trg_seq :  torch.Size([256, 28]) torch.int64
+            # src_seq :  torch.Size([256, 30]) torch.int64
+            # trg_seq :  torch.Size([256, 32]) torch.int64
+            # src_seq :  torch.Size([256, 30]) torch.int64
+            # trg_seq :  torch.Size([256, 27]) torch.int64
+            # src_seq :  torch.Size([256, 36]) torch.int64
+            # trg_seq :  torch.Size([256, 42]) torch.int64
+            # src_seq :  torch.Size([256, 25]) torch.int64
+            # trg_seq :  torch.Size([256, 28]) torch.int64
+            # src_seq :  torch.Size([256, 34]) torch.int64
+            # trg_seq :  torch.Size([256, 30]) torch.int64
+            # src_seq :  torch.Size([256, 30]) torch.int64
+            # trg_seq :  torch.Size([256, 27]) torch.int64
+            # src_seq :  torch.Size([256, 37]) torch.int64
+            # trg_seq :  torch.Size([256, 34]) torch.int64
+            # src_seq :  torch.Size([256, 45]) torch.int64
+            # trg_seq :  torch.Size([256, 40]) torch.int64            
+            print("src_seq : ", src_seq.shape, src_seq.dtype)
+            print("trg_seq : ", trg_seq.shape, src_seq.dtype)
+            
             pred = model(src_seq, trg_seq)
             loss, n_correct, n_word = cal_performance(
                 pred, gold, opt.trg_pad_idx, smoothing=False)
@@ -303,8 +337,10 @@ def prepare_dataloaders_from_bpe_files(opt, device):
     MIN_FREQ = 2
     if not opt.embs_share_weight:
         raise Exception("err")
-
-    data = pickle.load(open(opt.data_pkl, 'rb'))
+    
+    with open(opt.data_pkl, 'rb') as f:
+        data = pickle.load(f)
+        
     MAX_LEN = data['settings'].max_len
     field = data['vocab']
     fields = (field, field)
@@ -334,7 +370,8 @@ def prepare_dataloaders_from_bpe_files(opt, device):
 
 def prepare_dataloaders(opt, device):
     batch_size = opt.batch_size
-    data = pickle.load(open(opt.data_pkl, 'rb'))
+    with open(opt.data_pkl, 'rb') as f:
+        data = pickle.load(f)
 
     opt.max_token_seq_len = data['settings'].max_len
     opt.src_pad_idx = data['vocab']['src'].vocab.stoi[Constants.PAD_WORD]

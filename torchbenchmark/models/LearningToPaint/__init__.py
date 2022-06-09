@@ -53,7 +53,8 @@ class Model(BenchmarkModel):
         self.eval_model.eval()
         train_batch = train_batch.to(self.device)
         self.ground_truth = self.ground_truth.to(self.device)
-
+        
+        
         if self.jit:
             if hasattr(torch.jit, '_script_pdt'):
                 net = torch.jit._script_pdt(net, example_inputs = [(train_batch, ), ])
@@ -85,9 +86,15 @@ class Model(BenchmarkModel):
             loss.backward()
             self.optimizer.step()
 
-    def eval(self, niter=1):
-        for _ in range(niter):
-            self.eval_model(self.example_inputs)
+    def eval(self, niter=1, data = []):
+        if len(data) > 0:
+            for _ in range(niter):
+                self.eval_model(self.example_inputs)
+                
+        else:
+            for _ in range(niter):
+                self.eval_model(data)
+
 
 if __name__ == '__main__':
     m = Model(device='cpu', jit=False)

@@ -53,7 +53,7 @@ class Model(BenchmarkModel):
         
         return transformer
 
-    def __init__(self, device=None, jit=False):
+    def __init__(self, device=None, jit=False, use_client_data = True):
         super().__init__()
         self.device = device
         self.jit = jit
@@ -89,12 +89,16 @@ class Model(BenchmarkModel):
         transformer = self._create_transformer()
         self.eval_model = self._create_transformer()
         self.eval_model.eval()
-
-        batch = list(validation_data)[0]
-        src_seq = patch_src(batch.src, self.opt.src_pad_idx).to(self.device)
-        trg_seq, self.gold = map(lambda x: x.to(self.device), patch_trg(batch.trg, self.opt.trg_pad_idx))
-        # We use validation_data for training as well so that it can finish fast enough.
-        self.example_inputs = (src_seq, trg_seq)
+        
+        if use_client_data:
+            self.example_inputs = None
+        else:
+            batch = list(validation_data)[0]
+            src_seq = patch_src(batch.src, self.opt.src_pad_idx).to(self.device)
+            trg_seq, self.gold = map(lambda x: x.to(self.device), patch_trg(batch.trg, self.opt.trg_pad_idx))
+            # We use validation_data for training as well so that it can finish fast enough.
+            self.example_inputs = (src_seq, trg_seq)
+        
         if self.jit:
             if hasattr(torch.jit, '_script_pdt'):
                 transformer = torch.jit._script_pdt(transformer, example_inputs = [self.example_inputs, ])
@@ -108,10 +112,15 @@ class Model(BenchmarkModel):
     def get_module(self):
         return self.module, self.example_inputs
 
-    def eval(self, niter=1):
+    def eval(self, niter=1, data = []):
         self.module.eval()
-        for _ in range(niter):
-            self.eval_model(*self.example_inputs)
+        
+        if len(data) > 0:
+            for _ in range(niter):
+                self.eval_model(data)
+        else:
+            for _ in range(niter):
+                self.eval_model(*self.example_inputs)
 
     def train(self, niter=1):
         optimizer = ScheduledOptim(

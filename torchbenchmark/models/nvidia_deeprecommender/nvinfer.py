@@ -117,7 +117,7 @@ class DeepRecommenderInferenceBenchmark:
 
   def __init__(self, device = 'cpu', jit=False, usecommandlineargs = False) :
 
-    self.toytest = True
+    self.toytest = False
 
     self.batch_size = 256
 
@@ -208,12 +208,17 @@ class DeepRecommenderInferenceBenchmark:
   
       self.eval_data_layer.src_data = self.data_layer.data
 
-  def eval(self, niter=1):
+  def eval(self, niter=1, data = []):
     for iteration in range(niter):
 
-      if self.toytest:
+      if len(data) > 0:
+        self.rencoder(data)
+        continue
+      elif self.toytest:
         self.rencoder(self.toyinputs)
         continue
+        
+    
 
       for i, ((out, src), majorInd) in enumerate(self.eval_data_layer.iterate_one_epoch_eval(for_inf=True)):
         inputs = Variable(src.cuda().to_dense() if self.args.use_cuda else src.to_dense())
