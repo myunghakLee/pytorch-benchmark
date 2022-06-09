@@ -452,22 +452,26 @@ def list_models(model_match=None):
     models = []
     print(_list_model_paths())
     for model_path in _list_model_paths():
+        print("=" * 100)
         model_name = os.path.basename(model_path)
-
+        print("model_name : ", model_name)
         try:
             module = importlib.import_module(f'.models.{model_name}', package=__name__)
         except ModuleNotFoundError as e:
             print(f"Warning: Could not find dependent module {e.name} for Model {model_name}, skip it")
             continue
         Model = getattr(module, 'Model', None)
+        print("Model : ", Model)
         if Model is None:
             print(f"Warning: {module} does not define attribute Model, skip it")
             continue
         if not hasattr(Model, 'name'):
             Model.name = model_name
+            print("Model.name : ", Model.name)
 
         # If given model_match, only return full or partial name matches in models.
         if model_match is None:
+            print("APPEND!!!!!!")
             models.append(Model)
         else:
             if model_match.lower() in Model.name.lower():
