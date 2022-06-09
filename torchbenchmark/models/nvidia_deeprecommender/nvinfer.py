@@ -118,6 +118,7 @@ class DeepRecommenderInferenceBenchmark:
   def __init__(self, device = 'cpu', jit=False, usecommandlineargs = False) :
 
     self.toytest = False
+    self.client_data = False
 
     self.batch_size = 256
 
@@ -151,7 +152,7 @@ class DeepRecommenderInferenceBenchmark:
     if not self.args.silent:
       print("Loading training data")
     
-    if self.toytest == False:
+    if self.toytest == False and self.client_data == False:
       self.data_layer = input_layer.UserItemRecDataProvider(params=self.params)
     
       if not self.args.silent:
@@ -166,7 +167,7 @@ class DeepRecommenderInferenceBenchmark:
     self.eval_params['batch_size'] = 1
     self.eval_params['data_dir'] = self.args.path_to_eval_data
   
-    if self.toytest:
+    if self.toytest or self.client_data:
       self.rencoder = model.AutoEncoder(layer_sizes=[self.node_count] + [int(l) for l in self.args.hidden_layers.split(',')],
                                         nl_type=self.args.non_linearity_type,
                                         is_constrained=self.args.constrained,
@@ -202,7 +203,7 @@ class DeepRecommenderInferenceBenchmark:
   
     if self.args.use_cuda: self.rencoder = self.rencoder.cuda()
 
-    if self.toytest == False:
+    if self.toytest == False or self.client_data == False:
       self.inv_userIdMap = {v: k for k, v in self.data_layer.userIdMap.items()}
       self.inv_itemIdMap = {v: k for k, v in self.data_layer.itemIdMap.items()}
   

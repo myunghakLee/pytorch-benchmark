@@ -11,7 +11,7 @@ from torchbenchmark.tasks import COMPUTER_VISION
 #       DO NOT MODIFY THESE FILES DIRECTLY!!!
 #       USE `gen_torchvision_benchmarks.py`
 #
-#######################################################
+# ######################################################
 class Model(BenchmarkModel):
     task = COMPUTER_VISION.CLASSIFICATION
     optimized_for_inference = True
