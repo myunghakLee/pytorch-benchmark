@@ -61,6 +61,8 @@ class Model(BenchmarkModel):
         self.opt = Namespace(**{
             'src_vocab_size' : 31,
             'trg_vocab_size' : 31,
+            'trg_pad_idx' : 0,
+            'src_pad_idx' : 0,
             'batch_size': 128,
             'd_inner_hid': 2048,
             'd_k': 64,
