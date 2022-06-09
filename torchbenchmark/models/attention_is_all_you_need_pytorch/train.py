@@ -19,9 +19,9 @@ except ImportError:
     from torchtext.data import Field, Dataset, BucketIterator
     from torchtext.datasets import TranslationDataset
 
-from transformer import Constants
-from transformer.Models import Transformer
-from transformer.Optim import ScheduledOptim
+from .transformer import Constants
+from .transformer.Models import Transformer
+from .transformer.Optim import ScheduledOptim
 import random
 import numpy as np
 
