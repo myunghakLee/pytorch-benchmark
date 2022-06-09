@@ -203,7 +203,7 @@ class DeepRecommenderInferenceBenchmark:
   
     if self.args.use_cuda: self.rencoder = self.rencoder.cuda()
 
-    if self.toytest == False or self.client_data == False:
+    if self.toytest == False and self.client_data == False:
       self.inv_userIdMap = {v: k for k, v in self.data_layer.userIdMap.items()}
       self.inv_itemIdMap = {v: k for k, v in self.data_layer.itemIdMap.items()}
   
